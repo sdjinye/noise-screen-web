@@ -1,0 +1,29 @@
+.a-down-close-trigger {
+	animation: ShowDropdown 0.2s linear forwards;
+	transform-origin: 0px 0px;
+
+	&.z-closing {
+		animation: CloseDropdown 0.2s linear forwards;
+	}
+
+	@keyframes ShowDropdown {
+		0% {
+			opacity: 0;
+			transform: scaleY(0.7);
+		}
+		100% {
+			opacity: 1;
+			transform: scaleY(1);
+		}
+	}
+	@keyframes CloseDropdown {
+		0% {
+			opacity: 1;
+			transform: scaleY(1);
+		}
+		100% {
+			opacity: 0;
+			transform: scaleY(0.8);
+		}
+	}
+}
