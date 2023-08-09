@@ -20,16 +20,16 @@ export default defineComponent({
 				// center: [116.333926, 39.997245]
 			})
 
-			map.addControl(
-				new AMap.ControlBar({
-					showZoomBar: false,
-					showControlButton: true,
-					position: {
-						right: '10px',
-						top: '10px'
-					}
-				})
-			)
+			// map.addControl(
+			// 	new AMap.ControlBar({
+			// 		showZoomBar: false,
+			// 		showControlButton: true,
+			// 		position: {
+			// 			right: '10px',
+			// 			top: '10px'
+			// 		}
+			// 	})
+			// )
 		})
 
 		return map

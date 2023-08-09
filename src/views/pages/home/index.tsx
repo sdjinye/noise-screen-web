@@ -7,9 +7,7 @@ export default defineComponent({
 	render() {
 		return (
 			<div class="page-home">
-				<div class="page-home_container">
-					<LeftData />
-				</div>
+				<LeftData />
 				<Map />
 			</div>
 		)
