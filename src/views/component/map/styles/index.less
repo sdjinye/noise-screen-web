@@ -6,3 +6,20 @@
 	z-index: 0;
 	height: 100%;
 }
+.amap-marker-label {
+	background-color: transparent;
+	border: none;
+	.info {
+		background-color: rgba(33, 33, 33, 0.8);
+		color: #fff;
+		padding: 5px 10px;
+		border: none;
+		border-radius: 10px;
+		&.z-danger {
+			background-color: rgba(255, 0, 0, 0.8);
+		}
+		&.z-warn {
+			background-color: rgba(255, 126, 0, 0.8);
+		}
+	}
+}

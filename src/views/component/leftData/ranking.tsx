@@ -9,7 +9,7 @@ export default defineComponent({
 				container: 'js-ranking',
 				theme: 'classic',
 				autoFit: true,
-				padding: 15
+				padding: 0
 			})
 
 			chart.coordinate({ transform: [{ type: 'transpose' }] })
@@ -26,11 +26,6 @@ export default defineComponent({
 			]
 			chart
 				.interval()
-				// .data({
-				// 	type: 'fetch',
-				// 	value: 'https://gw.alipayobjects.com/os/bmw-prod/fb9dB6b7-23a5-4c23-bbef-c54a55fee580.csv',
-				// 	format: 'csv'
-				// })
 				.data({
 					type: 'inline',
 					value: data,
@@ -38,12 +33,14 @@ export default defineComponent({
 				})
 				.encode('x', 'letter')
 				.encode('y', 'dB')
-				.axis('y', { labelFormatter: '.0%', label: false })
-				.axis('x', { label: false, title: false })
+				.axis('y', {
+					labelFormatter: (aaa) => aaa.toString() + 'dB',
+					label: false
+				})
+				.axis('x', { title: 'dasd', label: false })
 				.label({
 					text: 'dB',
-					formatter: '0.1%',
-					// fontSize:44,
+					formatter: (aaa) => aaa.toString() + 'dB',
 					style: {
 						textAnchor: (d) => (+d.dB > 0.008 ? 'right' : 'start'),
 						fill: (d) => (+d.dB > 0.008 ? '#fff' : '#000'),

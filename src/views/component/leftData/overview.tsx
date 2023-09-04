@@ -19,7 +19,7 @@ export default defineComponent({
 						<span>在线设备</span>
 					</div>
 					<div class="item">
-						<Cycle color="#ff4222" color2="#ff9280" />
+						<Cycle color="#ff0000" color2="#ff9280" />
 						<h2>32,199</h2>
 						<span>离线设备</span>
 					</div>

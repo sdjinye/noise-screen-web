@@ -5,6 +5,7 @@ export default defineComponent({
 	setup() {
 		function setRem() {
 			// 默认使用100px作为基准大小
+			if (window.innerWidth < 1500) window.innerWidth = 1500
 			const baseSize = 40
 			const baseVal = baseSize / 1920
 			const vW = window.innerWidth // 当前窗口的宽度
