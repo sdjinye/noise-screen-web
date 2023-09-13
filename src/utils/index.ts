@@ -9,3 +9,14 @@ export function generateRandomString(length) {
 
 	return result
 }
+
+export function GetUserData() {
+	const userData = localStorage.getItem('device6.jinyeins.com:16479/userData')
+	if (typeof userData === 'undefined' || userData === '' || userData === null) {
+		console.error('当前用户未登录')
+		return false
+	}
+
+	const user = JSON.parse(userData)
+	return user
+}

@@ -10,6 +10,7 @@
 	"dependencies": {
 		"@antv/g2": "^5.0.18",
 		"ant-design-vue": "4.x",
+		"axios": "^1.5.0",
 		"core-js": "^3.8.3",
 		"postcss-pxtorem": "^6.0.0",
 		"typescript-eslint": "^0.0.1-alpha.0",

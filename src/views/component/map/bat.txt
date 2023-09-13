@@ -1,0 +1,5 @@
+
+
+
+ffmpeg -i A.mp4 -i C.mp4  -stream_loop 99 -i  "合成 1.mov" -filter_complex "[0:v]format=yuva444p,colorchannelmixer=aa=0.06[valpha];[valpha]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:format=rgb[v0output];[1:v]scale=1920:1080[out2];[out2][v0output]overlay=x=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2[out3];[out3][2:v]overlay[out]" -map "[out]" -y -t 25 output.mp4
+

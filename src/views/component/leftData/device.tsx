@@ -1,58 +1,55 @@
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, ref, toRefs } from 'vue'
 import '@/views/component/leftData/styles/device.less'
+import userApi from '@/api/userApi'
+import { GetUserData } from '@/utils'
+
 export default defineComponent({
 	name: 'ComponentLeftDataDevice',
+	emits: ['onItemClick'],
+	setup(props, { emit }) {
+		// onCretae
+		const state = reactive({
+			list: [{ title: 'K9通源大道与科技路口监控杆', mn: 'YL0912WZ002303011', status: '离线' }] as any
+		})
+
+		const reload = () => {
+			const user = GetUserData()
+			console.log('user===', user)
+			if (user === false) return
+			const api = userApi.GetUserDataDeptList({
+				params: { cpn: 'p_user_data_dept_list2', pns: ['v_user_id', 'v_dept_id'], pts: [4, 4], pvs: [user.id, user.dept_id] }
+			})
+			api.then((data) => {
+				state.list = data
+			})
+		}
+
+		reload()
+
+		const onItem = (item) => {
+			emit('onItemClick', item)
+		}
+
+		return {
+			onItem,
+			...toRefs(state)
+		}
+	},
 	render() {
 		return (
 			<div class="cm-device-list">
 				<div class="cm-device-row z-t">
 					<h6>设备列表</h6>
 				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K9通源大道与科技路口监控杆</div>
-					<div class="cm-device-row__item">YL0912WZ002303011</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K10通源大道与陕煤路(太阳能)</div>
-					<div class="cm-device-row__item">YL0912WZ002303020</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K7汇源大道与能源路口监控杆</div>
-					<div class="cm-device-row__item">YL0912WZ002303019</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K4能源路东1设备（太阳能）</div>
-					<div class="cm-device-row__item">YL0912WZ002303018</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K8通源大道与能源路（太阳能）</div>
-					<div class="cm-device-row__item">YL0912WZ002303017</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K14创业路与开拓路路灯杆</div>
-					<div class="cm-device-row__item">YL0912WZ002303016</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K13榆神管委会后山气象站监控杆</div>
-					<div class="cm-device-row__item">YL0912WZ002303015</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K19清水北路与神华路监控杆</div>
-					<div class="cm-device-row__item">YL0912WZ002303014</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
-				<div class="cm-device-row">
-					<div class="cm-device-row__item z-title">K11通源大道与延长路监控杆</div>
-					<div class="cm-device-row__item">YL0912WZ002303013</div>
-					<div class="cm-device-row__item">在线</div>
-				</div>
+				{this.list.map((item) => {
+					return (
+						<div class="cm-device-row" onClick={() => this.onItem(item)}>
+							<div class="cm-device-row__item z-title">{item.dept_name}</div>
+							<div class="cm-device-row__item">{item.mn}</div>
+							<div class="cm-device-row__item">{item.status}</div>
+						</div>
+					)
+				})}
 			</div>
 		)
 	}
