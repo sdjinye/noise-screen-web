@@ -1,10 +1,18 @@
-import { defineComponent, onMounted } from 'vue'
+import { PropType, defineComponent, onMounted, watch } from 'vue'
 import '@/views/component/map/styles/index.less'
 import alarmPointImage from '@/assets/alarmPoint.png'
 import faultPointImage from '@/assets/faultPoint.png'
+import { props } from '@antv/g2/lib/api/chart'
+import { Item } from 'ant-design-vue/es/menu'
 export default defineComponent({
 	name: 'ComponentMap',
-	setup() {
+	emits:['eMarkerclick'],
+	props: {
+		mapDevList: { type: Array } as any,
+		centLongitude: { type: Number, default: 116.607214 },
+		centLatitude: { type: Number, default: 35.400786 }
+	},
+	setup(props,{emit}) {
 		let map
 
 		function countCharacters(str) {
@@ -28,7 +36,7 @@ export default defineComponent({
 			}
 		}
 
-		const setLabel = (type: 'alarm' | 'default' | 'fault' = 'default', position: number[], title: string) => {
+		const setLabel = (type: 'alarm' | 'default' | 'fault' = 'default', position: number[], title: string, devid: Number, devMn: String) => {
 			// 创建标记点对象
 			const count = countCharacters(title)
 			let length = count.chinese * 10
@@ -58,6 +66,13 @@ export default defineComponent({
 			const marker = new AMap.Marker(markerParmas)
 			marker.setLabel(labelParmas)
 			marker.setMap(map)
+			// console.log(devid)
+			marker.on('click', () => markerclick(devid,devMn))
+		}
+		// 地图标点点击事件
+		const markerclick = (devid,devMn) => {
+			// console.log('markerclick',devid,devMn)
+			emit('eMarkerclick',devid,devMn)
 		}
 
 		onMounted(() => {
@@ -72,28 +87,36 @@ export default defineComponent({
 				buildingAnimation: true, //楼块出现是否带动画
 				expandZoomRange: true,
 				zooms: [3, 20],
-				center: [116.333926, 39.997245]
+				center: [props.centLongitude, props.centLatitude]
 			})
-
-			setLabel('fault', [116.330926, 39.997245], 'K14创业路与开拓路路灯杆')
-			setLabel('default', [116.333926, 39.997245], 'K10通源大道与陕煤路(太阳能)')
-			setLabel('alarm', [116.332946, 39.994255], 'K9通源大道与科技路口监控杆')
-			setLabel('default', [116.332326, 39.999245], 'K7汇源大道与能源路口监控杆')
-			setLabel('alarm', [116.333926, 39.993245], 'K4能源路东1设备（太阳能）')
-			setLabel('default', [116.343926, 39.997245], 'K8通源大道与能源路（太阳能）')
-			setLabel('fault', [116.336926, 39.997245], 'K13榆神管委会后山气象站监控杆')
-
-			// K7汇源大道与能源路口监控杆
-			// K4能源路东1设备（太阳能）
-			// K8通源大道与能源路（太阳能）
-			// K13榆神管委会后山气象站监控杆
-
-			// K19清水北路与神华路监控杆
-			// K11通源大道与延长路监控杆
-			// label.setMap(map)
+			// 地图加载标点
+			watch(
+				() => props.mapDevList,
+				() => {
+					let lon
+					let lat
+					props.mapDevList.forEach((item) => {
+						// console.log(item)
+						setLabel(item.online === 0 ? 'fault' : 'default', [item.longitude, item.latitude], item.mn, item.device_id_d,item.mn)
+						// setLabel('fault', [116.330926, 39.997245], 'K14创业路与开拓路路灯杆')
+						lon = item.longitude
+						lat = item.latitude
+						// console.log("111111",lon,lat)
+					})
+					map.setCenter([lon, lat])
+				}
+			)
+			// 选中设备 地图选中
+			watch(
+				() => [props.centLongitude, props.centLatitude],
+				() => {
+					// console.log(props.centLongitude, props.centLatitude)
+					map.setCenter([props.centLongitude, props.centLatitude])
+				}
+			)
+			
 		})
 
-		// alarmPoint.png
 
 		return map
 	},

@@ -24,7 +24,7 @@ export default <T>(url: string, params: ApiParams = {}, inputParams: ApiParams =
 	params = Object.assign(defaultParams, params, inputParams)
 	const method: Method = typeof params.method === 'undefined' ? 'get' : params.method
 
-	params.params = Object.assign(params.params, inputParams.params)
+	// params.params = Object.assign(params.params, inputParams.params)
 	// 处理url中的变量
 	const ajaxParams: Record<string, any> = {}
 	if (typeof params.params !== 'undefined' && Object.keys(params.params).length > 0) {

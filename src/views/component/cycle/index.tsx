@@ -18,7 +18,6 @@ export default defineComponent({
 				height: 110,
 				padding: 8
 			})
-
 			chart.coordinate({ type: 'theta', innerRadius: 0.7 })
 
 			chart.interval().data

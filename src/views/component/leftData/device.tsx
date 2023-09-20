@@ -5,29 +5,35 @@ import { GetUserData } from '@/utils'
 
 export default defineComponent({
 	name: 'ComponentLeftDataDevice',
-	emits: ['onItemClick'],
+	emits: ['itemClick'],
+	props: {
+		devlist: { type: Array } as any
+	},
 	setup(props, { emit }) {
 		// onCretae
 		const state = reactive({
-			list: [{ title: 'K9通源大道与科技路口监控杆', mn: 'YL0912WZ002303011', status: '离线' }] as any
+			// list: [] as any
 		})
+		// console.log(props.devlist)
+		// state.list = props.devlist
+		// const reload = () => {
+		// const user = GetUserData()
+		// // console.log('user===', user)
+		// if (user === false) return
+		// const api = userApi.GetUserDataDeptList({
+		// 	params: { cpn: 'p_user_data_dept_list2', pns: ['v_user_id', 'v_dept_id'], pts: [4, 4], pvs: [user.id, user.dept_id] }
+		// })
+		// api.then((data) => {
+		// 	state.list = data
+		// 	// console.log(state.list)
+		// })
 
-		const reload = () => {
-			const user = GetUserData()
-			console.log('user===', user)
-			if (user === false) return
-			const api = userApi.GetUserDataDeptList({
-				params: { cpn: 'p_user_data_dept_list2', pns: ['v_user_id', 'v_dept_id'], pts: [4, 4], pvs: [user.id, user.dept_id] }
-			})
-			api.then((data) => {
-				state.list = data
-			})
-		}
+		// }
 
-		reload()
-
+		// reload()
+		// 点击设备 传 父页面
 		const onItem = (item) => {
-			emit('onItemClick', item)
+			emit('itemClick', item)
 		}
 
 		return {
@@ -36,17 +42,24 @@ export default defineComponent({
 		}
 	},
 	render() {
+		// console.log (this.$props.devlist)
+		// console.log(this.list)
 		return (
 			<div class="cm-device-list">
 				<div class="cm-device-row z-t">
 					<h6>设备列表</h6>
 				</div>
-				{this.list.map((item) => {
+				<div class="cm-device-row">
+					<div class="cm-device-row__item z-title">设备名称</div>
+					<div class="cm-device-row__item">设备MN</div>
+					<div class="cm-device-row__item">设备状态</div>
+				</div>
+				{this.$props.devlist.map((item) => {
 					return (
 						<div class="cm-device-row" onClick={() => this.onItem(item)}>
-							<div class="cm-device-row__item z-title">{item.dept_name}</div>
+							<div class="cm-device-row__item z-title">{item.name}</div>
 							<div class="cm-device-row__item">{item.mn}</div>
-							<div class="cm-device-row__item">{item.status}</div>
+							<div class="cm-device-row__item">{item.online===0?"离线":"在线"}</div>
 						</div>
 					)
 				})}
